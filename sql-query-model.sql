@@ -1,1 +1,158 @@
+-- Create a table to store customer information
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,   -- Unique ID for each customer
+    name VARCHAR(100) NOT NULL,       -- Customer's full name
+    email VARCHAR(150) UNIQUE,        -- Email must be unique
+    created_at TIMESTAMP DEFAULT NOW() -- Auto-stamped creation time
+);
 
+-- Insert sample data
+INSERT INTO customers (name, email)
+VALUES 
+    ('Alice Johnson', 'alice@example.com'),
+    ('Bob Smith', 'bob@example.com');
+
+-- Select all customers
+SELECT * FROM customers;
+
+-- Select a single customer by ID
+SELECT * 
+FROM customers
+WHERE customer_id = 1;
+
+-- Update customer email
+UPDATE customers
+SET email = 'alice.johnson@example.com'
+WHERE customer_id = 1;
+
+-- Delete a customer
+DELETE FROM customers
+WHERE customer_id = 2;
+
+
+
+-- Products table stores all sellable items
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,       -- Unique ID
+    product_name VARCHAR(150) NOT NULL,  -- Name of product
+    price DECIMAL(10,2) NOT NULL,        -- Price of product
+    stock INT DEFAULT 0,                 -- Available inventory
+    created_at TIMESTAMP DEFAULT NOW()   -- Creation timestamp
+);
+
+-- Insert sample items
+INSERT INTO products (product_name, price, stock)
+VALUES
+  ('Laptop', 899.99, 12),
+  ('Keyboard', 49.99, 50),
+  ('Monitor', 159.99, 25);
+
+
+
+
+
+
+
+-- Orders table stores customer purchases
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,       -- Unique order number
+    customer_id INT NOT NULL,          -- FK to customers table
+    order_total DECIMAL(10,2),         -- Calculated total
+    order_date TIMESTAMP DEFAULT NOW(),-- Timestamp
+    status VARCHAR(50) DEFAULT 'Pending', -- Order status
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+-- Example insert
+INSERT INTO orders (customer_id, order_total)
+VALUES (1, 249.99);
+
+
+
+
+
+
+-- Order items table stores each product inside an order
+CREATE TABLE order_items (
+    item_id SERIAL PRIMARY KEY,    -- Unique item row
+    order_id INT NOT NULL,         -- FK to orders
+    product_id INT NOT NULL,       -- FK to products
+    quantity INT NOT NULL,         -- Quantity bought
+    price_each DECIMAL(10,2),      -- Price at time of purchase
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Example insert
+INSERT INTO order_items (order_id, product_id, quantity, price_each)
+VALUES (1, 2, 3, 49.99); -- 3 Keyboards
+
+
+
+
+
+-- Get list of products inside a specific order
+SELECT 
+    oi.item_id,
+    p.product_name,
+    oi.quantity,
+    oi.price_each,
+    (oi.quantity * oi.price_each) AS line_total
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+WHERE oi.order_id = 1;
+
+
+
+
+
+
+
+
+-- Get full order details including customer info
+SELECT 
+    o.order_id,
+    c.name AS customer_name,
+    o.order_total,
+    o.order_date,
+    o.status
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+
+
+
+
+-- Find top-selling products by quantity sold
+SELECT 
+    p.product_name,
+    SUM(oi.quantity) AS total_sold
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY total_sold DESC;
+
+
+
+
+-- Find products with low inventory
+SELECT 
+    product_id,
+    product_name,
+    stock
+FROM products
+WHERE stock < 10;
+
+
+
+
+
+
+-- Show all orders for one customer
+SELECT 
+    o.order_id,
+    o.order_total,
+    o.order_date,
+    o.status
+FROM orders o
+WHERE o.customer_id = 1
+ORDER BY o.order_date DESC;
