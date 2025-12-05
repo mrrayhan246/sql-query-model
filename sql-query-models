@@ -134,6 +134,59 @@ ORDER BY total_sold DESC;
 
 
 
+-- Find products with low inventory
+SELECT 
+    product_id,
+    product_name,
+    stock
+FROM products
+WHERE stock < 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
