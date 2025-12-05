@@ -91,7 +91,16 @@ VALUES (1, 2, 3, 49.99); -- 3 Keyboards
 
 
 
-
+-- Get list of products inside a specific order
+SELECT 
+    oi.item_id,
+    p.product_name,
+    oi.quantity,
+    oi.price_each,
+    (oi.quantity * oi.price_each) AS line_total
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+WHERE oi.order_id = 1;
 
 
 
