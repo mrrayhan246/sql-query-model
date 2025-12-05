@@ -46,3 +46,23 @@ VALUES
   ('Laptop', 899.99, 12),
   ('Keyboard', 49.99, 50),
   ('Monitor', 159.99, 25);
+
+
+
+
+
+
+
+-- Orders table stores customer purchases
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,       -- Unique order number
+    customer_id INT NOT NULL,          -- FK to customers table
+    order_total DECIMAL(10,2),         -- Calculated total
+    order_date TIMESTAMP DEFAULT NOW(),-- Timestamp
+    status VARCHAR(50) DEFAULT 'Pending', -- Order status
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+-- Example insert
+INSERT INTO orders (customer_id, order_total)
+VALUES (1, 249.99);
