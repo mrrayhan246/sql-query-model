@@ -1,0 +1,30 @@
+-- Create a table to store customer information
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,   -- Unique ID for each customer
+    name VARCHAR(100) NOT NULL,       -- Customer's full name
+    email VARCHAR(150) UNIQUE,        -- Email must be unique
+    created_at TIMESTAMP DEFAULT NOW() -- Auto-stamped creation time
+);
+
+-- Insert sample data
+INSERT INTO customers (name, email)
+VALUES 
+    ('Alice Johnson', 'alice@example.com'),
+    ('Bob Smith', 'bob@example.com');
+
+-- Select all customers
+SELECT * FROM customers;
+
+-- Select a single customer by ID
+SELECT * 
+FROM customers
+WHERE customer_id = 1;
+
+-- Update customer email
+UPDATE customers
+SET email = 'alice.johnson@example.com'
+WHERE customer_id = 1;
+
+-- Delete a customer
+DELETE FROM customers
+WHERE customer_id = 2;
