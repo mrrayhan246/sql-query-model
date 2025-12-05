@@ -100,7 +100,15 @@ VALUES (1, 2, 3, 49.99); -- 3 Keyboards
 
 
 
-
+-- Get full order details including customer info
+SELECT 
+    o.order_id,
+    c.name AS customer_name,
+    o.order_total,
+    o.order_date,
+    o.status
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
 
 
 
