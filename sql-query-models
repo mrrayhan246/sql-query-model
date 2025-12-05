@@ -66,3 +66,53 @@ CREATE TABLE orders (
 -- Example insert
 INSERT INTO orders (customer_id, order_total)
 VALUES (1, 249.99);
+
+
+
+
+
+
+-- Order items table stores each product inside an order
+CREATE TABLE order_items (
+    item_id SERIAL PRIMARY KEY,    -- Unique item row
+    order_id INT NOT NULL,         -- FK to orders
+    product_id INT NOT NULL,       -- FK to products
+    quantity INT NOT NULL,         -- Quantity bought
+    price_each DECIMAL(10,2),      -- Price at time of purchase
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Example insert
+INSERT INTO order_items (order_id, product_id, quantity, price_each)
+VALUES (1, 2, 3, 49.99); -- 3 Keyboards
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
