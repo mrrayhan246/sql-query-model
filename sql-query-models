@@ -147,7 +147,15 @@ WHERE stock < 10;
 
 
 
-
+-- Show all orders for one customer
+SELECT 
+    o.order_id,
+    o.order_total,
+    o.order_date,
+    o.status
+FROM orders o
+WHERE o.customer_id = 1
+ORDER BY o.order_date DESC;
 
 
 
