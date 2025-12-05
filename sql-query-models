@@ -28,3 +28,21 @@ WHERE customer_id = 1;
 -- Delete a customer
 DELETE FROM customers
 WHERE customer_id = 2;
+
+
+
+-- Products table stores all sellable items
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,       -- Unique ID
+    product_name VARCHAR(150) NOT NULL,  -- Name of product
+    price DECIMAL(10,2) NOT NULL,        -- Price of product
+    stock INT DEFAULT 0,                 -- Available inventory
+    created_at TIMESTAMP DEFAULT NOW()   -- Creation timestamp
+);
+
+-- Insert sample items
+INSERT INTO products (product_name, price, stock)
+VALUES
+  ('Laptop', 899.99, 12),
+  ('Keyboard', 49.99, 50),
+  ('Monitor', 159.99, 25);
